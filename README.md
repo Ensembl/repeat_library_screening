@@ -1,2 +1,3 @@
-# repeat_library_screening
-Genebuild project
+# Repeat Library Screening
+
+https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Repeat+Library+Screening
