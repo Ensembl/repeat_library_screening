@@ -120,23 +120,23 @@ foreach my $transcript (@{$transcript_adaptor->fetch_all_by_biotype($biotype)}) 
   my $seq_region_strand = $transcript->seq_region_strand();
   my $seq_region_name = $transcript->seq_region_name();
 
-  my $left_flanking_sequence = $slice_adaptor->fetch_by_region('toplevel',
+  my $left_flanking_slice = $slice_adaptor->fetch_by_region('toplevel',
                                                                $seq_region_name,
-                                                               $seq_region_start-$flanking_length,
+                                                               $seq_region_start-$flanking_length+1,
                                                                $seq_region_start,
                                                                $seq_region_strand);
-  my $right_flanking_sequence = $slice_adaptor->fetch_by_region('toplevel',
+  my $right_flanking_slice = $slice_adaptor->fetch_by_region('toplevel',
                                                                $seq_region_name,
                                                                $seq_region_end,
-                                                               $seq_region_end+$flanking_length,
+                                                               $seq_region_end+$flanking_length-1,
                                                                $seq_region_strand);;
 
   my $transcript_seq = $transcript->spliced_seq(); # concatenated exon sequences
 
   if ($seq_region_strand) {
-    $transcript_seq = $left_flanking_sequence.$transcript_seq.$right_flanking_sequence;
+    $transcript_seq = $left_flanking_slice->seq().$transcript_seq.$right_flanking_slice->seq();
   } else {
-    $transcript_seq = $right_flanking_sequence.$transcript_seq.$left_flanking_sequence;
+    $transcript_seq = $right_flanking_slice->seq().$transcript_seq.$left_flanking_slice->seq();
   }
 
   $transcript_seq =~ s/(\w{60})/$1\n/g; # format into 60-base lines
