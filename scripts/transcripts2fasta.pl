@@ -122,13 +122,13 @@ foreach my $transcript (@{$transcript_adaptor->fetch_all_by_biotype($biotype)}) 
 
   my $left_flanking_slice = $slice_adaptor->fetch_by_region('toplevel',
                                                                $seq_region_name,
-                                                               $seq_region_start-$flanking_length+1,
-                                                               $seq_region_start,
+                                                               $seq_region_start-1-$flanking_length+1,
+                                                               $seq_region_start-1,
                                                                $seq_region_strand);
   my $right_flanking_slice = $slice_adaptor->fetch_by_region('toplevel',
                                                                $seq_region_name,
-                                                               $seq_region_end,
-                                                               $seq_region_end+$flanking_length-1,
+                                                               $seq_region_end+1,
+                                                               $seq_region_end+1+$flanking_length-1,
                                                                $seq_region_strand);;
 
   my $transcript_seq = $transcript->spliced_seq(); # concatenated exon sequences
