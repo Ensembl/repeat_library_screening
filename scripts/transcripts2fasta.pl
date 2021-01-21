@@ -136,7 +136,9 @@ foreach my $transcript (@{$transcript_adaptor->fetch_all_by_biotype($biotype)}) 
   if ($seq_region_strand) {
     $transcript_seq = $left_flanking_slice->seq().$transcript_seq.$right_flanking_slice->seq();
   } else {
-    $transcript_seq = $right_flanking_slice->seq().$transcript_seq.$left_flanking_slice->seq();
+    my $reverse_left_flanking_seq = Bio::PrimarySeq->new(-seq => $left_flanking_slice->seq())->revcom()->seq();
+    my $reverse_right_flanking_seq = Bio::PrimarySeq->new(-seq => $right_flanking_slice->seq())->revcom()->seq();
+    $transcript_seq = $reverse_left_flanking_seq.$transcript_seq.$reverse_right_flanking_seq;
   }
 
   $transcript_seq =~ s/(\w{60})/$1\n/g; # format into 60-base lines
